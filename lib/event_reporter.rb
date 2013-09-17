@@ -44,7 +44,7 @@ class EventReporter
   def find_it(attribute,criteria)
     results = []
     @attendees.each do |attendee|
-      if attendee.zip_code == "20010"
+      if attendee.send(attribute) == criteria
         results.push(attendee)
         puts attendee
       end
