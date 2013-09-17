@@ -15,6 +15,12 @@ class EventReporterTest < MiniTest::Test
     assert_equal "Goodbye!", response
   end
 
+  def test_it_says_goodbye_when_command_is_exit
+    er = EventReporter.new
+    response = er.process_input("exit yeah")
+    assert_equal "Goodbye!", response
+  end
+
   def test_it_provides_a_list_of_commands_when_command_is_help
     er = EventReporter.new
     response = er.process_input("help")

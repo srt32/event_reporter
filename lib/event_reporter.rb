@@ -27,6 +27,7 @@ class EventReporter
     directive = user_input.split(" ")[1..-1]
     case command
       when "quit" then "Goodbye!"
+      when "exit" then "Goodbye!"
       when "help" then "quit, help" # 2 options
       when "load" then load_csv_data
       when "queue" then queue_method
