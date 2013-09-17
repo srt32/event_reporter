@@ -35,4 +35,21 @@ class EventReporterTest < MiniTest::Test
     assert_equal "SAUNDERS", parsed_data[0].last_name
   end
 
+  def test_queue_is_empty
+    er = EventReporter.new
+    assert_nil @queue
+  end
+
+  def test_it_runs_queue_count_when_queue_is_called
+    er = EventReporter.new
+    parsed_data = er.process_input("queue")
+    assert_send([er, :queue_method])
+  end
+
+    def test_it_returns_zero_for_queue_if_no_other_commands_calls
+    er = EventReporter.new
+    parsed_data = er.process_input("queue")
+    assert_equal 0, parsed_data
+  end
+
 end

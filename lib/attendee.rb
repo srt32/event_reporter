@@ -1,5 +1,5 @@
 class Attendee
-  attr_reader :first_name, :last_name
+  attr_reader :first_name, :last_name, :phone_number, :zip_code
 
   def initialize(input = {})
     @first_name = input[:first_name]

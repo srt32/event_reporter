@@ -1,9 +1,10 @@
 require 'csv'
 
 class EventReporter
+  attr_accessor :queue
 
   def initialize
-    puts "Initializing -- Welcome"
+    @queue = []
   end
 
   def run
@@ -26,9 +27,13 @@ class EventReporter
       when "quit" then "Goodbye!"
       when "help" then "quit, help" # 2 options
       when "load" then load_csv_data
-      # when "queue" then "xxx" # many options
+      when "queue" then queue_method
       # when "find" then "xxx" # options
     end
+  end
+
+  def queue_method
+    true
   end
 
   def load_csv_data(filename = "event_attendees.csv")
