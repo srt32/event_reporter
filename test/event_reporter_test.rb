@@ -47,7 +47,7 @@ class EventReporterTest < MiniTest::Test
     assert_send([er, :queue_method])
   end
 
-    def test_it_returns_zero_for_queue_if_no_other_commands_called
+  def test_it_returns_zero_for_queue_if_no_other_commands_called
     er = EventReporter.new
     parsed_data = er.process_input("queue")
     assert_equal 0, parsed_data
@@ -69,6 +69,14 @@ class EventReporterTest < MiniTest::Test
     er = EventReporter.new
     er.process_input("load")
     input = "find zip_code 20010"
+    results = er.process_input(input)
+    assert_equal 2, results.count
+  end
+
+  def test_it_gets_data_from_attendees_given_first_name
+    er = EventReporter.new
+    er.process_input("load")
+    input = "find first_name Sarah"
     results = er.process_input(input)
     assert_equal 2, results.count
   end

@@ -46,7 +46,6 @@ class EventReporter
     @attendees.each do |attendee|
       if attendee.send(attribute) == criteria
         results.push(attendee)
-        puts attendee
       end
     end
     return results
