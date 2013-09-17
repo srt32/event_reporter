@@ -60,5 +60,5 @@ class EventReporter
 
 end
 
-er = EventReporter.new
-er.run
+# er = EventReporter.new
+# er.run
