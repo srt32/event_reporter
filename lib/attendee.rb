@@ -5,7 +5,7 @@ class Attendee
     @first_name = input[:first_name]
     @last_name = input[:last_name]
     @phone_number = PhoneNumber.new(input[:phone_number]).number
-    @zip_code = input[:zip_code]
+    @zip_code = ZipCode.new(input[:zip_code]).zip_code
   end
 
 end
