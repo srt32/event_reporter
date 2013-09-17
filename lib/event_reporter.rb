@@ -14,7 +14,8 @@ class EventReporter
       printf "Enter your command:"
       user_input = gets.chomp
       command = user_input.split(" ")[0]
-      process_input(user_input)
+      response = process_input(user_input)
+      puts response
     end
   end
 
@@ -59,5 +60,5 @@ class EventReporter
 
 end
 
-# er = EventReporter.new
-# er.run
+er = EventReporter.new
+er.run
