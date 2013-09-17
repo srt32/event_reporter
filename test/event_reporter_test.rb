@@ -31,9 +31,9 @@ class EventReporterTest < MiniTest::Test
     er = EventReporter.new
     parsed_data = er.process_input("load")
     assert_kind_of Array, parsed_data
-    assert_equal 5176, parsed_data.count
-    assert_equal "Greg", parsed_data[0].first_name
-    assert_equal "SAUNDERS", parsed_data[0].last_name
+    assert_equal 4, parsed_data.count
+    assert_equal "Allison", parsed_data[0].first_name
+    assert_equal "Nguyen", parsed_data[0].last_name
   end
 
   def test_queue_is_empty_upon_startup
@@ -53,11 +53,24 @@ class EventReporterTest < MiniTest::Test
     assert_equal 0, parsed_data
   end
 
+  def test_attendees_is_empty_upon_startup
+    er = EventReporter.new
+    assert_nil @attendees
+  end
+
   def test_it_calls_find_method_when_command_is_find
     er = EventReporter.new
     input = "find last_name SAUNDERS"
     er.process_input(input)
-    assert_send([er, :find_parser, *args = "last_name SAUNDERS"])
+    assert_send([er, :find_parser, ["last_name", "SAUNDERS"]])
+  end
+
+  def test_it_gets_data_from_attendees_given_zip_code
+    er = EventReporter.new
+    er.process_input("load")
+    input = "find zip_code 20010"
+    results = er.process_input(input)
+    assert_equal 2, results.count
   end
 
 end

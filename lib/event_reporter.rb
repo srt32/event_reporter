@@ -2,10 +2,11 @@ require 'csv'
 require './lib/attendee'
 
 class EventReporter
-  attr_accessor :queue
+  attr_accessor :queue, :attendees
 
   def initialize
     @queue = []
+    @attendees = []
   end
 
   def run
@@ -24,7 +25,6 @@ class EventReporter
   def process_input(user_input)
     command = user_input.split(" ")[0]
     directive = user_input.split(" ")[1..-1]
-    puts "high level directive is #{directive}"
     case command
       when "quit" then "Goodbye!"
       when "help" then "quit, help" # 2 options
@@ -35,11 +35,21 @@ class EventReporter
   end
 
   def find_parser(directive)
-    puts "directive is #{directive}"
-    param = directive[0] # BREAKING UP THE WORDS WRONG
-    param_value = directive[1..-1]
-    puts "param is #{param} and param_value is #{param_value}"
-    true
+    attribute = directive[0]
+    criteria = directive[1..-1].join(" ")
+    results = find_it(attribute,criteria)
+    return results
+  end
+
+  def find_it(attribute,criteria)
+    results = []
+    @attendees.each do |attendee|
+      if attendee.zip_code == "20010"
+        results.push(attendee)
+        puts attendee
+      end
+    end
+    return results
   end
 
   def queue_method
@@ -48,33 +58,18 @@ class EventReporter
 
   def load_csv_data(filename = "event_attendees_test.csv")
     data = import_csv(filename)
-    parsed_data = parse_data(data)
-    create_attendees(parsed_data)
+    create_attendees(data)
   end
 
   def import_csv(filename)
     CSV.open filename, headers: true, header_converters: :symbol
   end
 
-  def parse_data(data) # needs to be fixedXXX
-    parsed_data = []
-    attendee_data = {}
-    data.each do |row|
-      attendee_data[:id] = row[0]
-      attendee_data[:name] = row[:first_name]
-      attendee_data[:last_name] = row[:last_name]
-    end
-    parsed_data.push(attendee_data)
-    return parsed_data
-    puts parsed_data
-  end
-
-  def create_attendees(parsed_data)
-    attendees = parsed_data.collect do |row|
-      Attendee.new(:id => row[:id], :first_name => row[:name], :last_name => row[:last_name])
+  def create_attendees(data)
+    @attendees = data.collect do |row|
+      Attendee.new(:id => row[0], :first_name => row[:first_name], :last_name => row[:last_name], :zip_code => row[:zipcode])
     end
     return attendees
-    puts attendees
   end
 
 end
