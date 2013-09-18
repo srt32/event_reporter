@@ -18,7 +18,7 @@ class EventReporterTest < MiniTest::Test
   def test_it_provides_a_list_of_commands_when_command_is_help
     er = EventReporter.new
     response = er.process_input("help")
-    assert_equal "quit, help", response
+    assert_equal "Available commands are: help, quit, load, queue, find, print.", response
   end
 
   def test_it_loads_a_file_when_command_is_load

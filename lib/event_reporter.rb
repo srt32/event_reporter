@@ -27,11 +27,22 @@ class EventReporter
     directive = user_input.split(" ")[1..-1]
     case command
       when "quit" then "Goodbye!"
-      when "help" then "quit, help" # 2 options
+      when "help" then help_output
       when "load" then load_csv_data
       when "queue" then queue_parser(directive)
       when "find" then find_parser(directive)
     end
+  end
+
+  def print_queue
+    @queue.each do |attendee|
+      puts "First name:  #{attendee.first_name}"
+      puts "Zip code:  #{attendee.zip_code}"
+    end
+  end
+
+  def help_output
+    "Available commands are: help, quit, load, queue, find, print."
   end
 
   def find_parser(directive)
@@ -74,13 +85,6 @@ class EventReporter
 
   def count_queue
     @queue.count
-  end
-
-  def print_queue
-    @queue.each do |attendee|
-      puts "First name:  #{attendee.first_name}"
-      puts "Zip code:  #{attendee.zip_code}"
-    end
   end
 
   def load_csv_data(filename = "event_attendees_test.csv")
