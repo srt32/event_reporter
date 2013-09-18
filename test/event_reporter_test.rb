@@ -87,6 +87,7 @@ class EventReporterTest < MiniTest::Test
     results = er.find_it("zip_code","20010")
     @queue = er.send_results_to_queue(results)
     assert_equal(2, @queue.count)
+    # maybe er.queue ???
   end
 
   def test_it_runs_queue_parser_when_queue_is_called
@@ -118,7 +119,9 @@ class EventReporterTest < MiniTest::Test
   def test_it_runs_sort_queue_when_queue_print_by_is_called
     er = EventReporter.new
     parsed_data = er.process_input("queue print by first_name")
-    assert_send([er, :queue_print_parser, ["print by first_name"]])
+    sort_command = er.queue_print_parser("print by first_name")
+    sort_queue_result = er.sort_queue("by first_name")
+    assert_equal sort_command, sort_queue_result
   end
 
   def it_should_print_by_zip_code_when_by_attribute_is_zip_code

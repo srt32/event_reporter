@@ -77,12 +77,19 @@ class EventReporter
     attribute = directive[2..-1]
     case queue_print_by
       when nil then print_queue
-      else sort_queue(attribute)
+      else sort_and_print_queue(attribute)
     end
   end
 
+  def sort_and_print_queue(attribute)
+    sort_queue(attribute)
+    # print_queue
+  end
+
   def sort_queue(attribute)
-    12  ###
+    # sort the queue 
+
+    12
   end
 
   def print_queue
