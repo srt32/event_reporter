@@ -15,7 +15,7 @@ class EventReporter
 
     command = ""
     while command != "quit"
-      printf "Enter your comgmand:"
+      printf "Enter your command:"
       user_input = gets.chomp
       command = user_input.split(" ")[0]
       response = process_input(user_input)
@@ -33,7 +33,7 @@ class EventReporter
       when "load" then load_csv_data
       when "queue" then queue_parser(directive)
       when "find" then find_parser(directive)
-    end
+      end
   end
 
   def help_output
@@ -45,7 +45,6 @@ class EventReporter
     attribute = directive[0]
     criteria = directive[1..-1].join(" ")
     find_and_add_to_queue(attribute,criteria)
-    
   end
 
   def find_and_add_to_queue(attribute,criteria)

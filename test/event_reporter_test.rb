@@ -130,12 +130,12 @@ class EventReporterTest < MiniTest::Test
     assert_equal sort_command, sort_queue_result
   end
 
-  def it_should_print_by_zip_code_when_by_attribute_is_zip_code
-    er = EventReporter.new
-    er.process_input("load")
-    er.process_input("find first_name Sarah")
-    sorted_list = er.process_input("queue print by first_name")
-    assert_equal 2, sorted_list
+  def test_it_should_print_by_zip_code_when_by_attribute_is_zip_code
+    sarah = EventReporter.new
+    sarah.process_input("load")
+    sarah.process_input("find first_name Sarah")
+    sorted_list = sarah.process_input("queue print by zip_code")
+    assert_equal "00000", sorted_list[0].zip_code
   end
 
 end
