@@ -130,7 +130,7 @@ class EventReporterTest < MiniTest::Test
     assert_equal sort_command, sort_queue_result
   end
 
-  def test_it_should_print_by_zip_code_when_by_attribute_is_zip_code
+  def test_it_should_print_by_first_name_when_by_attribute_is_zip_code
     sarah = EventReporter.new
     sarah.process_input("load")
     sarah.process_input("find first_name Sarah")

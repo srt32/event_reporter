@@ -93,9 +93,9 @@ class EventReporter
   end
 
   def print_queue
+    puts "LAST NAME\tFIRST NAME\tEMAIL\tZIPCODE\tCITY\tSTATE\tADDRESS\tPHONE"
     @queue.each do |attendee|
-      puts "First name:  #{attendee.first_name}"
-      puts "Zip code:  #{attendee.zip_code}"
+      puts "#{attendee.last_name}\t\t#{attendee.first_name}\t\t#{attendee.email}\t\t\t\t#{attendee.zip_code}\t\t#{attendee.city}\t\t#{attendee.state}\t\t#{attendee.address}\t\t#{attendee.phone_number}"
     end
   end
 
