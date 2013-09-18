@@ -14,7 +14,7 @@ class EventReporter
 
     command = ""
     while command != "quit"
-      printf "Enter your command:"
+      printf "Enter your comgmand:"
       user_input = gets.chomp
       command = user_input.split(" ")[0]
       response = process_input(user_input)
@@ -68,7 +68,6 @@ class EventReporter
       when "clear" then clear_queue
       when "count" then count_queue
       when "print" then queue_print_parser(directive)
-    # end
     end
   end
 
@@ -82,14 +81,13 @@ class EventReporter
   end
 
   def sort_and_print_queue(attribute)
+    attribute = attribute.join
     sort_queue(attribute)
-    # print_queue
+    print_queue
   end
 
   def sort_queue(attribute)
-    # sort the queue 
-
-    12
+    @queue = @queue.sort_by {|attendee| attendee.send(attribute)}
   end
 
   def print_queue
@@ -107,7 +105,7 @@ class EventReporter
     @queue.count
   end
 
-  def load_csv_data(filename = "event_attendees_test.csv")
+  def load_csv_data(filename = "event_attendees.csv")
     data = import_csv(filename)
     create_attendees(data)
   end

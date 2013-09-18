@@ -120,12 +120,16 @@ class EventReporterTest < MiniTest::Test
     er = EventReporter.new
     parsed_data = er.process_input("queue print by first_name")
     sort_command = er.queue_print_parser("print by first_name")
-    sort_queue_result = er.sort_queue("by first_name")
+    sort_queue_result = er.sort_queue("first_name")
     assert_equal sort_command, sort_queue_result
   end
 
   def it_should_print_by_zip_code_when_by_attribute_is_zip_code
-    skip
+    er = EventReporter.new
+    er.process_input("load")
+    er.process_input("find first_name Sarah")
+    sorted_list = er.process_input("queue print by first_name")
+    assert_equal 2, sorted_list
   end
 
 end
