@@ -27,33 +27,51 @@ class EventReporter
     directive = user_input.split(" ")[1..-1]
     case command
       when "quit" then "Goodbye!"
-      when "exit" then "Goodbye!"
       when "help" then "quit, help" # 2 options
       when "load" then load_csv_data
-      when "queue" then queue_method
+      when "queue" then queue_parser(directive)
       when "find" then find_parser(directive)
     end
   end
 
   def find_parser(directive)
+    # add code to trap if "load" has not yet been run
     attribute = directive[0]
     criteria = directive[1..-1].join(" ")
+    find_and_add_to_queue(attribute,criteria)
+    
+  end
+
+  def find_and_add_to_queue(attribute,criteria)
     results = find_it(attribute,criteria)
-    return results
+    send_results_to_queue(results)
   end
 
   def find_it(attribute,criteria)
-    results = []
-    @attendees.each do |attendee|
-      if attendee.send(attribute) == criteria
-        results.push(attendee)
-      end
-    end
-    return results
+    @attendees.find_all {|attendee| attendee.send(attribute) == criteria}
   end
 
-  def queue_method
-    0
+  def send_results_to_queue(results)
+    @queue = []
+    results.each do |result|
+      @queue.push(result)
+    end
+    return @queue
+  end
+
+  def queue_parser(directive)
+    # commands: count, clear, print, print by, print to
+    # queue_command = directive[0]
+    # case queue_command
+    #   when count then count_queue
+    #   when clear then clear_queue
+    #   when print then print_parser # print by, print to
+    # end
+    # 0
+    @queue.each do |attendee|
+      puts "First name:  #{attendee.first_name}"
+      puts "Zip code:  #{attendee.zip_code}"
+    end
   end
 
   def load_csv_data(filename = "event_attendees_test.csv")

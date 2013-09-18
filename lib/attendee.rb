@@ -1,3 +1,6 @@
+require './lib/phone_number'
+require './lib/zip_code'
+
 class Attendee
   attr_accessor :first_name, :last_name, :phone_number, :zip_code
 

@@ -15,12 +15,6 @@ class EventReporterTest < MiniTest::Test
     assert_equal "Goodbye!", response
   end
 
-  def test_it_says_goodbye_when_command_is_exit
-    er = EventReporter.new
-    response = er.process_input("exit yeah")
-    assert_equal "Goodbye!", response
-  end
-
   def test_it_provides_a_list_of_commands_when_command_is_help
     er = EventReporter.new
     response = er.process_input("help")
@@ -47,10 +41,11 @@ class EventReporterTest < MiniTest::Test
     assert_nil @queue
   end
 
+  # this test needs to be updated to make sure it actually calls queue_count
   def test_it_runs_queue_count_when_queue_is_called
     er = EventReporter.new
-    parsed_data = er.process_input("queue")
-    assert_send([er, :queue_method])
+    parsed_data = er.process_input("queue count")
+    assert_send([er, :queue_parser, "count"])
   end
 
   def test_it_returns_zero_for_queue_if_no_other_commands_called
@@ -74,17 +69,24 @@ class EventReporterTest < MiniTest::Test
   def test_it_gets_data_from_attendees_given_zip_code
     er = EventReporter.new
     er.process_input("load")
-    input = "find zip_code 20010"
-    results = er.process_input(input)
+    results = er.find_it("zip_code","20010")
     assert_equal 2, results.count
   end
 
   def test_it_gets_data_from_attendees_given_first_name
     er = EventReporter.new
     er.process_input("load")
-    input = "find first_name Sarah"
-    results = er.process_input(input)
+    results = er.find_it("first_name","Sarah")
     assert_equal 2, results.count
+  end
+
+  # finish this test
+  def test_it_calls_send_to_queue_after_find 
+    er = EventReporter.new
+    er.process_input("load")
+    results = er.find_it("first_name","Sarah")
+    queue = er.send_results_to_queue(results)
+    assert_equal(2, queue.count)
   end
 
 end
