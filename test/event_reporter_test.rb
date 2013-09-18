@@ -34,6 +34,12 @@ class EventReporterTest < MiniTest::Test
     assert_equal 5175, parsed_data.count
     assert_equal "Allison", parsed_data[0].first_name
     assert_equal "Nguyen", parsed_data[0].last_name
+    assert_equal "arannon@jumpstartlab.com", parsed_data[0].email
+    assert_equal "6154385000", parsed_data[0].phone_number
+    assert_equal "3155 19th St NW", parsed_data[0].address
+    assert_equal "Washington", parsed_data[0].city
+    assert_equal "DC", parsed_data[0].state
+    assert_equal "20010", parsed_data[0].zip_code
   end
 
   def test_queue_is_empty_upon_startup

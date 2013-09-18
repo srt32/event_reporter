@@ -1,5 +1,6 @@
 require 'csv'
 require './lib/attendee'
+require 'pry'
 
 class EventReporter
   attr_accessor :queue, :attendees
@@ -116,7 +117,7 @@ class EventReporter
 
   def create_attendees(data)
     @attendees = data.collect do |row|
-      Attendee.new(:id => row[0], :first_name => row[:first_name], :last_name => row[:last_name], :zip_code => row[:zipcode])
+      Attendee.new(:id => row[0], :first_name => row[:first_name], :last_name => row[:last_name], :zip_code => row[:zipcode], :email => row[:email_address], :phone_number => row[:homephone], :address => row[:street], :city => row[:city], :state => row[:state])
     end
     # return attendees
   end
