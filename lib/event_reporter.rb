@@ -52,22 +52,31 @@ class EventReporter
   end
 
   def send_results_to_queue(results)
-    @queue = []
-    results.each do |result|
-      @queue.push(result)
-    end
+    clear_queue
+    @queue = results.collect {|result| result}
     return @queue
   end
 
   def queue_parser(directive)
     # commands: count, clear, print, print by, print to
-    # queue_command = directive[0]
-    # case queue_command
-    #   when count then count_queue
-    #   when clear then clear_queue
-    #   when print then print_parser # print by, print to
+    queue_command = directive[0]
+    case queue_command
+      when "clear" then clear_queue
+      when "count" then count_queue
+    #   when print then print_parser # print by, print to #print_queue  
     # end
-    # 0
+    end
+  end
+
+  def clear_queue
+    @queue = []
+  end  
+
+  def count_queue
+    @queue.count
+  end
+
+  def print_queue
     @queue.each do |attendee|
       puts "First name:  #{attendee.first_name}"
       puts "Zip code:  #{attendee.zip_code}"
