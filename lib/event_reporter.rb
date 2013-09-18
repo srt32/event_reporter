@@ -34,15 +34,8 @@ class EventReporter
     end
   end
 
-  def print_queue
-    @queue.each do |attendee|
-      puts "First name:  #{attendee.first_name}"
-      puts "Zip code:  #{attendee.zip_code}"
-    end
-  end
-
   def help_output
-    "Available commands are: help, quit, load, queue, find, print."
+    "Available commands are: help, quit, load, queue, find."
   end
 
   def find_parser(directive)
@@ -74,8 +67,28 @@ class EventReporter
     case queue_command
       when "clear" then clear_queue
       when "count" then count_queue
-    #   when print then print_parser # print by, print to #print_queue  
+      when "print" then queue_print_parser(directive)
     # end
+    end
+  end
+
+  def queue_print_parser(directive)
+    queue_print_by = directive[1]
+    attribute = directive[2..-1]
+    case queue_print_by
+      when nil then print_queue
+      else sort_queue(attribute)
+    end
+  end
+
+  def sort_queue(attribute)
+    12  ###
+  end
+
+  def print_queue
+    @queue.each do |attendee|
+      puts "First name:  #{attendee.first_name}"
+      puts "Zip code:  #{attendee.zip_code}"
     end
   end
 

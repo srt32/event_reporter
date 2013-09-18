@@ -18,7 +18,7 @@ class EventReporterTest < MiniTest::Test
   def test_it_provides_a_list_of_commands_when_command_is_help
     er = EventReporter.new
     response = er.process_input("help")
-    assert_equal "Available commands are: help, quit, load, queue, find, print.", response
+    assert_equal "Available commands are: help, quit, load, queue, find.", response
   end
 
   def test_it_loads_a_file_when_command_is_load
@@ -89,20 +89,6 @@ class EventReporterTest < MiniTest::Test
     assert_equal(2, @queue.count)
   end
 
-  def test_it_returns_empty_for_queue_if_no_other_commands_called
-    er = EventReporter.new
-    parsed_data = er.process_input("queue")
-    assert_equal true, parsed_data.nil?
-  end
-
-  def test_it_returns_zero_for_queue_if_only_load_is_called
-    er = EventReporter.new
-    er.process_input("load")
-    parsed_data = er.process_input("queue")
-    assert_equal true, parsed_data.nil?
-  end
-
-    # this test needs to be updated to make sure it actually calls queue_count
   def test_it_runs_queue_parser_when_queue_is_called
     er = EventReporter.new
     parsed_data = er.process_input("queue count")
@@ -121,6 +107,22 @@ class EventReporterTest < MiniTest::Test
     er.find_it("zip_code","20010")
     results = er.queue_parser(["clear"])
     assert_equal true, results.empty?
+  end
+
+  def test_it_runs_queue_print_parser_when_queue_print_is_called
+    er = EventReporter.new
+    parsed_data = er.process_input("queue print")
+    assert_send([er, :queue_print_parser, ["print"]])
+  end
+
+  def test_it_runs_sort_queue_when_queue_print_by_is_called
+    er = EventReporter.new
+    parsed_data = er.process_input("queue print by first_name")
+    assert_send([er, :queue_print_parser, ["print by first_name"]])
+  end
+
+  def it_should_print_by_zip_code_when_by_attribute_is_zip_code
+    skip
   end
 
 end
