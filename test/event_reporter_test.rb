@@ -32,13 +32,13 @@ class EventReporterTest < MiniTest::Test
     parsed_data = er.process_input("load")
     assert_kind_of Array, parsed_data
     assert_equal 5175, parsed_data.count
-    assert_equal "Allison", parsed_data[0].first_name
-    assert_equal "Nguyen", parsed_data[0].last_name
+    assert_equal "allison", parsed_data[0].first_name
+    assert_equal "nguyen", parsed_data[0].last_name
     assert_equal "arannon@jumpstartlab.com", parsed_data[0].email
     assert_equal "6154385000", parsed_data[0].phone_number
-    assert_equal "3155 19th St NW", parsed_data[0].address
-    assert_equal "Washington", parsed_data[0].city
-    assert_equal "DC", parsed_data[0].state
+    assert_equal "3155 19th st nw", parsed_data[0].address
+    assert_equal "washington", parsed_data[0].city
+    assert_equal "dc", parsed_data[0].state
     assert_equal "20010", parsed_data[0].zip_code
   end
 
@@ -69,16 +69,16 @@ class EventReporterTest < MiniTest::Test
   def test_it_gets_data_from_attendees_given_first_name
     er = EventReporter.new
     er.process_input("load")
-    results = er.find_it("first_name","Sarah")
-    assert_equal 76, results.count
+    results = er.find_it("first_name","sarah")
+    assert_equal 78, results.count
   end
 
   def test_queue_has_correct_count_after_find 
     er = EventReporter.new
     er.process_input("load")
-    results = er.find_it("first_name","Sarah")
+    results = er.find_it("first_name","sarah")
     queue = er.send_results_to_queue(results)
-    assert_equal(76, queue.count)
+    assert_equal(78, queue.count)
   end
 
 

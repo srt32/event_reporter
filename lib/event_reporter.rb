@@ -24,6 +24,7 @@ class EventReporter
   end
 
   def process_input(user_input)
+    user_input = user_input.downcase
     command = user_input.split(" ")[0]
     directive = user_input.split(" ")[1..-1]
     case command
@@ -53,6 +54,7 @@ class EventReporter
   end
 
   def find_it(attribute,criteria)
+    criteria = criteria.chomp(" ")
     @attendees.find_all {|attendee| attendee.send(attribute) == criteria}
   end
 
