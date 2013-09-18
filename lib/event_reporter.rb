@@ -18,7 +18,7 @@ class EventReporter
       user_input = gets.chomp
       command = user_input.split(" ")[0]
       response = process_input(user_input)
-      puts response
+      puts response unless response.class == Array
     end
   end
 
@@ -118,7 +118,7 @@ class EventReporter
     @attendees = data.collect do |row|
       Attendee.new(:id => row[0], :first_name => row[:first_name], :last_name => row[:last_name], :zip_code => row[:zipcode])
     end
-    return attendees
+    # return attendees
   end
 
 end
