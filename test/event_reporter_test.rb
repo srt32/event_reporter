@@ -31,7 +31,7 @@ class EventReporterTest < MiniTest::Test
     er = EventReporter.new
     parsed_data = er.process_input("load")
     assert_kind_of Array, parsed_data
-    assert_equal 4, parsed_data.count
+    assert_equal 5175, parsed_data.count
     assert_equal "Allison", parsed_data[0].first_name
     assert_equal "Nguyen", parsed_data[0].last_name
   end
@@ -57,14 +57,14 @@ class EventReporterTest < MiniTest::Test
     er = EventReporter.new
     er.process_input("load")
     results = er.find_it("zip_code","20010")
-    assert_equal 2, results.count
+    assert_equal 5, results.count
   end
 
   def test_it_gets_data_from_attendees_given_first_name
     er = EventReporter.new
     er.process_input("load")
     results = er.find_it("first_name","Sarah")
-    assert_equal 2, results.count
+    assert_equal 76, results.count
   end
 
   def test_queue_has_correct_count_after_find 
@@ -72,7 +72,7 @@ class EventReporterTest < MiniTest::Test
     er.process_input("load")
     results = er.find_it("first_name","Sarah")
     queue = er.send_results_to_queue(results)
-    assert_equal(2, queue.count)
+    assert_equal(76, queue.count)
   end
 
 
@@ -119,7 +119,7 @@ class EventReporterTest < MiniTest::Test
   def test_it_runs_sort_queue_when_queue_print_by_is_called
     er = EventReporter.new
     parsed_data = er.process_input("queue print by first_name")
-    sort_command = er.queue_print_parser("print by first_name")
+    sort_command = er.queue_print_parser(["print", "by", "first_name"])
     sort_queue_result = er.sort_queue("first_name")
     assert_equal sort_command, sort_queue_result
   end
