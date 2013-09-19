@@ -59,12 +59,10 @@ class EventReporter
 
   def send_results_to_queue(results)
     clear_queue
-    @queue = results.collect {|result| result}
-    return @queue
+    @queue =  results.collect {|result| result}
   end
 
-  def queue_parser(directive)
-    # commands: count, clear, print, print by, print to
+  def queue_parser(directive) 
     queue_command = directive[0]
     case queue_command
       when "clear" then clear_queue
@@ -83,15 +81,28 @@ class EventReporter
     end
   end
 
-  def queue_save(directive)
-    save_filename = directive[2..-1].join("")
-    save_file = File.open(save_filename, "w")
-
+  def transform_queue_into_array
     attendee_array = @queue.collect do |attendee|
        [attendee.email, attendee.first_name, attendee.last_name, attendee.phone_number, attendee.zip_code, attendee.city, attendee.state, attendee.address]
     end
+    return attendee_array
+  end
 
-    save_file.write('email,first_name,last_name,phone_number,zip_code,city,state,address')
+  def headers_row
+    'email,first_name,last_name,phone_number,zip_code,city,state,address'
+  end
+
+  def parse_filename(directive)
+    directive[2..-1].join("")
+  end
+
+  def queue_save(directive)
+    save_filename = parse_filename(directive)    
+    save_file = File.open(save_filename, "w")
+
+    attendee_array = transform_queue_into_array
+    
+    save_file.write(headers_row)
     attendee_array.each_with_index do |a_csv, i|
       queue_csv = CSV.generate do |csv|
         csv << a_csv
@@ -112,9 +123,13 @@ class EventReporter
     @queue = @queue.sort_by {|attendee| attendee.send(attribute)}
   end
 
+  def headers
+    "LAST NAME\tFIRST NAME\tEMAIL\tZIPCODE\tCITY\tSTATE\tADDRESS\tPHONE"
+  end
+
   def print_queue
     if @queue.length > 0
-      "LAST NAME\tFIRST NAME\tEMAIL\tZIPCODE\tCITY\tSTATE\tADDRESS\tPHONE"
+      headers
     end
     @queue.each do |attendee|
       puts "#{attendee.last_name}\t\t#{attendee.first_name}\t\t#{attendee.email}\t\t#{attendee.zip_code}\t\t#{attendee.city}\t\t#{attendee.state}\t\t#{attendee.address}\t\t#{attendee.phone_number}"
@@ -129,14 +144,14 @@ class EventReporter
     @queue.count
   end
 
-  def load_csv_data(filename = "event_attendees.csv")
-    # binding.pry
+  def default_filename
+    "event_attendees.csv"
+  end
+
+  def load_csv_data(filename = default_filename) 
     filename = filename[0]
-    # binding.pry
     filename = "event_attendees.csv" if filename.nil?
-    # binding.pry
     data = import_csv(filename)
-    # binding.pry
     create_attendees(data)
   end
 
@@ -148,7 +163,6 @@ class EventReporter
     @attendees = data.collect do |row|
       Attendee.new(:id => row[0], :first_name => row[:first_name], :last_name => row[:last_name], :zip_code => row[:zipcode], :email => row[:email_address], :phone_number => row[:homephone], :address => row[:street], :city => row[:city], :state => row[:state])
     end
-    # return attendees
   end
 
 end

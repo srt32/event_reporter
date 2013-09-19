@@ -1,5 +1,6 @@
-require 'minitest'
+gem 'minitest'
 require 'minitest/autorun'
+require 'minitest/pride'
 require './lib/phone_number'
 
 class PhoneNumberTest < MiniTest::Test

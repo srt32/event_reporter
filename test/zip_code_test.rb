@@ -1,5 +1,7 @@
+gem 'minitest'
 require 'minitest'
 require 'minitest/autorun'
+require 'minitest/pride'
 require './lib/zip_code'
 
 class ZipCodeTest < MiniTest::Test
