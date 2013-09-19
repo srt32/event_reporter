@@ -84,24 +84,17 @@ class EventReporter
   end
 
   def queue_save(directive)
-    # binding.pry
     save_filename = directive[2..-1].join("")
-    # binding.pry
-    #save_filename ||= "output_from_event_reporter.csv"
-    #save_file_path = "#{save_filename}"
     save_file = File.open(save_filename, "w")
-    # binding.pry
 
     attendee_array = @queue.collect do |attendee|
        [attendee.email, attendee.first_name, attendee.last_name, attendee.phone_number, attendee.zip_code, attendee.city, attendee.state, attendee.address]
     end
 
+    save_file.write('email,first_name,last_name,phone_number,zip_code,city,state,address')
     attendee_array.each_with_index do |a_csv, i|
       queue_csv = CSV.generate do |csv|
         csv << a_csv
-      end
-      if i == 0
-        save_file.write('email,first_name,last_name,phone_number,zip_code,city,state,address\t')
       end
       save_file.write(queue_csv)
     end
@@ -120,7 +113,9 @@ class EventReporter
   end
 
   def print_queue
-    puts "LAST NAME\tFIRST NAME\tEMAIL\tZIPCODE\tCITY\tSTATE\tADDRESS\tPHONE"
+    if @queue.length > 0
+      "LAST NAME\tFIRST NAME\tEMAIL\tZIPCODE\tCITY\tSTATE\tADDRESS\tPHONE"
+    end
     @queue.each do |attendee|
       puts "#{attendee.last_name}\t\t#{attendee.first_name}\t\t#{attendee.email}\t\t#{attendee.zip_code}\t\t#{attendee.city}\t\t#{attendee.state}\t\t#{attendee.address}\t\t#{attendee.phone_number}"
     end
