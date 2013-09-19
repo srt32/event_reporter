@@ -30,7 +30,7 @@ class EventReporter
     case command
       when "quit" then "Goodbye!"
       when "help" then help_output
-      when "load" then load_csv_data
+      when "load" then load_csv_data(directive)
       when "queue" then queue_parser(directive)
       when "find" then find_parser(directive)
       end
@@ -107,7 +107,6 @@ class EventReporter
     end
     save_file.close
     return save_file
-
   end
 
   def sort_and_print_queue(attribute)
@@ -136,7 +135,13 @@ class EventReporter
   end
 
   def load_csv_data(filename = "event_attendees.csv")
+    # binding.pry
+    filename = filename[0]
+    # binding.pry
+    filename = "event_attendees.csv" if filename.nil?
+    # binding.pry
     data = import_csv(filename)
+    # binding.pry
     create_attendees(data)
   end
 

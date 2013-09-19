@@ -21,10 +21,19 @@ class EventReporterTest < MiniTest::Test
     assert_equal "Available commands are: help, quit, load, queue, find.", response
   end
 
-  def test_it_loads_a_file_when_command_is_load
+  def test_it_loads_data_properly_from_file_give_a_filename
     er = EventReporter.new
-    er.process_input("load")
-    assert_send([er, :load_csv_data])
+    parsed_data = er.process_input("load event_attendees_test.csv")
+    assert_kind_of Array, parsed_data
+    assert_equal 4, parsed_data.count
+    assert_equal "barney", parsed_data[0].first_name
+    assert_equal "rubble", parsed_data[0].last_name
+    assert_equal "arannon@jumpstartlab.com", parsed_data[0].email
+    assert_equal "6154385000", parsed_data[0].phone_number
+    assert_equal "3155 19th st nw", parsed_data[0].address
+    assert_equal "washington", parsed_data[0].city
+    assert_equal "dc", parsed_data[0].state
+    assert_equal "20010", parsed_data[0].zip_code
   end
 
   def test_it_loads_data_properly_from_file
