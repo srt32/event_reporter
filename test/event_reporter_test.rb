@@ -138,7 +138,7 @@ class EventReporterTest < MiniTest::Test
     assert_equal "00000", sorted_list[0].zip_code
   end
 
-  def test_it_creates_a_file_when_command_to_queue_print_parser_is_save
+  def test_it_creates_a_file_type_when_command_to_queue_print_parser_is_save
     er = EventReporter.new
     save = er.queue_parser(["save","filename.csv"])
     # assert_send([er, :queue_save, ["save","filename.csv"]])
@@ -149,7 +149,7 @@ class EventReporterTest < MiniTest::Test
     er = EventReporter.new
     er.process_input("load")
     er.process_input("find first_name Sarah")
-    save = er.queue_parser(["save","filename.csv"])
+    save = er.queue_parser(["save","to","filename.csv"])
     exists = false
     if FileTest.exists?("filename.csv")
       exists = true

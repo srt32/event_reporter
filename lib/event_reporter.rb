@@ -84,10 +84,13 @@ class EventReporter
   end
 
   def queue_save(directive)
+    # binding.pry
     save_filename = directive[1..-1].join("")
-    save_filename ||= "output_from_event_reporter.csv"
-    save_file_path = "#{save_filename}"
-    save_file = File.open(save_file_path, "w")
+    # binding.pry
+    #save_filename ||= "output_from_event_reporter.csv"
+    #save_file_path = "#{save_filename}"
+    save_file = File.open(save_filename, "w")
+    # binding.pry
 
     attendee_array = @queue.collect do |attendee|
        [attendee.email, attendee.first_name, attendee.last_name, attendee.phone_number, attendee.zip_code, attendee.city, attendee.state, attendee.address]
@@ -102,6 +105,8 @@ class EventReporter
       end
       save_file.write(queue_csv)
     end
+    save_file.close
+    return save_file
 
   end
 
