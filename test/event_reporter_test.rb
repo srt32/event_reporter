@@ -140,7 +140,7 @@ class EventReporterTest < MiniTest::Test
 
   def test_it_creates_a_file_type_when_command_to_queue_print_parser_is_save
     er = EventReporter.new
-    save = er.queue_parser(["save","filename.csv"])
+    save = er.queue_parser(["save","to","filename.csv"])
     # assert_send([er, :queue_save, ["save","filename.csv"]])
     assert_kind_of File, save
   end

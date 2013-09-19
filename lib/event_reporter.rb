@@ -85,7 +85,7 @@ class EventReporter
 
   def queue_save(directive)
     # binding.pry
-    save_filename = directive[1..-1].join("")
+    save_filename = directive[2..-1].join("")
     # binding.pry
     #save_filename ||= "output_from_event_reporter.csv"
     #save_file_path = "#{save_filename}"
