@@ -53,6 +53,7 @@ class EventReporterTest < MiniTest::Test
   end
 
   def test_queue_is_empty_upon_startup
+    skip
     er = EventReporter.new
     assert_nil @queue
   end
