@@ -1,4 +1,3 @@
-gem 'minitest'
 require 'minitest/autorun'
 require 'minitest/pride'
 require './lib/result.rb'
@@ -6,9 +5,13 @@ require './lib/attendee.rb'
 
 class ResultTest < MiniTest::Test
 
+#notes
+  #rename @r_loaded
+
+
   def setup
     @attendee1 = Attendee.new(:first_name => "One")
-    @attendee2 = Attendee.new(:first_name => "Two", :last_name => "Apples")
+    @attendee2 = Attendee.new(:first_name => "Two", :last_name => "Apples", :zip_code => "80302")
     attendees_array = []
     attendees_array.push(@attendee1).push(@attendee2)
     @r_loaded = Result.new(attendees_array)
@@ -49,10 +52,24 @@ class ResultTest < MiniTest::Test
     assert_equal [@attendee2,@attendee1],sorted_attendees
   end
 
+ def test_it_can_print_headers_to_user_when_asked_queue_print
+    printed_results = @r_loaded.queue_print
+    assert_includes printed_results, "first_name last_name"
+  end
+
   def test_it_can_print_attendees_list_to_user_when_asked_queue_print
     printed_results = @r_loaded.queue_print
     assert_includes printed_results, "apples"
-
+    assert_includes printed_results, "80302"
   end
+
+  def test_it_can_save_attendees_to_a_file
+    skip
+    #this test will be utilized when moving the queue_save method into this
+    #class
+    output_file = @r_loaded.queue_save
+    assert_kind_of File, output_file
+  end
+
 end
 
