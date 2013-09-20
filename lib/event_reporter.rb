@@ -1,5 +1,6 @@
 require 'csv'
 require './lib/attendee'
+require './lib/result'
 require 'pry'
 
 class EventReporter
@@ -54,7 +55,7 @@ class EventReporter
 
   def find_it(attribute,criteria)
     criteria = criteria.chomp(" ")
-    @attendees.find_all {|attendee| attendee.send(attribute) == criteria}
+    attendees.find_all {|attendee| attendee.send(attribute) == criteria}
   end
 
   def send_results_to_queue(results)
@@ -81,11 +82,14 @@ class EventReporter
     end
   end
 
+  def attendee_attributes(attendee)
+   [attendee.email, attendee.first_name, attendee.last_name, attendee.phone_number, attendee.zip_code, attendee.city, attendee.state, attendee.address]
+  end
+
   def transform_queue_into_array
     attendee_array = @queue.collect do |attendee|
-       [attendee.email, attendee.first_name, attendee.last_name, attendee.phone_number, attendee.zip_code, attendee.city, attendee.state, attendee.address]
+       attendee_attributes(attendee)
     end
-    return attendee_array
   end
 
   def headers_row
@@ -96,14 +100,17 @@ class EventReporter
     directive[2..-1].join("")
   end
 
-  def queue_save(directive)
+  def get_name_and_open_file(directive)
     save_filename = parse_filename(directive)    
-    save_file = File.open(save_filename, "w")
+    File.open(save_filename, "w")
+  end
 
+  def queue_save(directive)
+    save_file = get_name_and_open_file(directive)
     attendee_array = transform_queue_into_array
     
     save_file.write(headers_row)
-    attendee_array.each_with_index do |a_csv, i|
+    attendee_array.each do |a_csv|
       queue_csv = CSV.generate do |csv|
         csv << a_csv
       end
@@ -127,12 +134,16 @@ class EventReporter
     "LAST NAME\tFIRST NAME\tEMAIL\tZIPCODE\tCITY\tSTATE\tADDRESS\tPHONE"
   end
 
+  def attendee_params_with_tabs(attendee)
+   "#{attendee.last_name}\t\t#{attendee.first_name}\t\t#{attendee.email}\t\t#{attendee.zip_code}\t\t#{attendee.city}\t\t#{attendee.state}\t\t#{attendee.address}\t\t#{attendee.phone_number}" 
+  end
+
   def print_queue
     if @queue.length > 0
       headers
     end
     @queue.each do |attendee|
-      puts "#{attendee.last_name}\t\t#{attendee.first_name}\t\t#{attendee.email}\t\t#{attendee.zip_code}\t\t#{attendee.city}\t\t#{attendee.state}\t\t#{attendee.address}\t\t#{attendee.phone_number}"
+      puts attendee_params_with_tabs(attendee)
     end
   end
 
@@ -156,12 +167,24 @@ class EventReporter
   end
 
   def import_csv(filename)
-    CSV.open filename, headers: true, header_converters: :symbol
+    CSV.read filename, headers: true, header_converters: :symbol
+  end
+
+  def create_attendee_object_from_row(row)
+    Attendee.new(:id => row[0], 
+                 :first_name => row[:first_name], 
+                 :last_name => row[:last_name], 
+                 :zip_code => row[:zipcode], 
+                 :email => row[:email_address], 
+                 :phone_number => row[:homephone], 
+                 :address => row[:street], 
+                 :city => row[:city], 
+                 :state => row[:state]) 
   end
 
   def create_attendees(data)
     @attendees = data.collect do |row|
-      Attendee.new(:id => row[0], :first_name => row[:first_name], :last_name => row[:last_name], :zip_code => row[:zipcode], :email => row[:email_address], :phone_number => row[:homephone], :address => row[:street], :city => row[:city], :state => row[:state])
+      create_attendee_object_from_row(row)
     end
   end
 

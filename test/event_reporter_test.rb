@@ -4,15 +4,15 @@ require './lib/event_reporter'
 
 class EventReporterTest < MiniTest::Test
 
-  def test_it_exists
-    er = EventReporter.new
-    assert_kind_of EventReporter, er
-  end
-
   def teardown
     if File.exists?("filename.csv")
       File.delete("filename.csv")
     end
+  end
+
+  def test_it_exists
+    er = EventReporter.new
+    assert_kind_of EventReporter, er
   end
 
   def test_it_says_goodbye_when_command_is_quit
