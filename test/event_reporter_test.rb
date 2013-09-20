@@ -1,4 +1,3 @@
-gem 'minitest'
 require 'minitest/autorun'
 require 'minitest/pride'
 require './lib/event_reporter'
@@ -52,12 +51,6 @@ class EventReporterTest < MiniTest::Test
     assert_equal "20010", parsed_data[0].zip_code
   end
 
-  def test_queue_is_empty_upon_startup
-    skip
-    er = EventReporter.new
-    assert_nil @queue
-  end
-
   def test_attendees_is_empty_upon_startup
     er = EventReporter.new
     assert_nil @attendees
@@ -92,19 +85,14 @@ class EventReporterTest < MiniTest::Test
     assert_equal(78, queue.count)
   end
 
-
-  # below test should error because queue is being pushed to without being cleaned
-  # to test, comment out empty_queue in send_results_to_queue
-  def test_queue_has_correct_count_after_two_finds
-    skip
+   def test_queue_has_correct_count_after_two_finds
     er = EventReporter.new
     er.process_input("load")
     results = er.find_it("first_name","Sarah")
-    @queue = er.send_results_to_queue(results)
+    er.send_results_to_queue(results)
     results = er.find_it("zip_code","20010")
-    @queue = er.send_results_to_queue(results)
-    assert_equal(2, @queue.count)
-    # maybe er.queue ???
+    er.send_results_to_queue(results)
+    assert_equal(5, er.queue.count)
   end
 
   def test_it_runs_queue_parser_when_queue_is_called
