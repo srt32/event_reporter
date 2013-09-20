@@ -9,6 +9,12 @@ class EventReporterTest < MiniTest::Test
     assert_kind_of EventReporter, er
   end
 
+  def teardown
+    if File.exists?("filename.csv")
+      File.delete("filename.csv")
+    end
+  end
+
   def test_it_says_goodbye_when_command_is_quit
     er = EventReporter.new
     response = er.process_input("quit yeah")
@@ -150,7 +156,7 @@ class EventReporterTest < MiniTest::Test
     er.process_input("find first_name Sarah")
     save = er.queue_parser(["save","to","filename.csv"])
     exists = false
-    if FileTest.exists?("filename.csv")
+    if File.exists?("filename.csv")
       exists = true
     end
     assert exists
